@@ -1,0 +1,20 @@
+version: '3.9'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    profiles:
+      - dev
+    ports:
+      - "8000:8000"
+
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    profiles:
+      - prod
+    ports:
+      - "8000:8000"

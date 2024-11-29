@@ -1,0 +1,48 @@
+[project]
+name = "shortener"
+version = "0.0.0"
+description = "A simple URL shortener service with FastAPI and SQLite to store the data."
+authors = [
+    { name = "Marco Espinosa", email = "marco@marcoespinosa.com" },]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.12"
+keywords = ["url", "shortener", "web", "api"]
+
+dependencies = [
+    "fastapi[standard]",
+    "uvicorn",
+    "sqlmodel",
+    "pydantic>=2.10.1",
+    "pydantic-settings>=2.6.1",
+    "alembic>=1.14.0",
+    "psycopg[binary]>=3.2.3",
+    "typer>=0.14.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pre-commit>=4.0.1",
+    "pytest-coverage>=0.0",
+    "pytest-mock>=3.14.0",
+    "pytest>=8.3.3",
+    "ruff>=0.6.9",
+]
+
+[tool.ruff]
+line-length = 100
+lint.select = ["E", "F", "W"]
+lint.extend-select = ["I"]
+
+[tool.lint.isort]
+detect-same-package = false
+known-local-folder = ["app"]
+lines-after-imports = 1
+lines-between-types = 1
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
