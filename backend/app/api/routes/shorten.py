@@ -2,8 +2,10 @@ import random
 import string
 from datetime import datetime, timezone
 from typing import Any
+from urllib.parse import urlparse
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import RedirectResponse
 from sqlmodel import select
 
 from app.api.deps import SessionDep
@@ -18,11 +20,15 @@ def generate_short_id(length: int = 6) -> str:
     return "".join(random.choices(string.ascii_letters + string.digits, k=length))
 
 
-@router.post("/", response_model=ShortURL)
-def shorten_url(original_url: str, session: SessionDep) -> Any:
+@router.get("/shorten", response_model=ShortURL)
+def shorten_url(url: str, session: SessionDep) -> Any:
     """Shorten a URL"""
     short_id = generate_short_id()
-    url = URL(original_url=original_url, short_id=short_id)
+
+    parsed_url = urlparse(url)
+    if not parsed_url.scheme:
+        url = f"{settings.DEFAULT_URL_SCHEMA}://{url}"
+    url = URL(original_url=url, short_id=short_id)
     session.add(url)
     session.commit()
     session.refresh(url)
@@ -30,11 +36,11 @@ def shorten_url(original_url: str, session: SessionDep) -> Any:
     return ShortURL(
         original_url=url.original_url,
         expires_at=url.expires_at,
-        short_url=f"{settings.HOST_NAME}/{url.short_id}",
+        short_url=f"{settings.FRONTEND_HOST}/{url.short_id}",
     )
 
 
-@router.get("/{short_id}", response_model=URLResponse)
+@router.get("/redirect", response_model=URLResponse)
 def redirect_to_url(short_id: str, session: SessionDep):
     """Redirect to the original URL"""
     statement = select(URL).where(URL.short_id == short_id)
@@ -53,5 +59,5 @@ def redirect_to_url(short_id: str, session: SessionDep):
 
     session.commit()
 
-    # Return the original URL
-    return URLResponse(original_url=result.original_url, hits=hit_stats.hits)
+    # Return a redirect response
+    return RedirectResponse(result.original_url)

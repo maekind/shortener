@@ -52,7 +52,15 @@ This project uses postgresql as the database. To run the database, you can use t
 docker run --name shortener-local-db -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:latest
 ```
 
-First time, you need to create the database:
+First time, you need to create the database and then run the migrations.
+Make sure you have the environment variables set up correctly.
+To create the database go to `scripts` directory and run:
+
+```bash
+python cli.py create-db
+```
+
+Then, run the migrations:
 
 ```bash
 alembic revision --autogenerate -m "Initial migration"
