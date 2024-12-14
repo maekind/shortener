@@ -4,12 +4,6 @@
 </p> -->
 <!-- Shields -->
 <p align="center">
-<a href="https://github.com/maekind/shortener"><img src="https://img.shields.io/github/actions/workflow/status/maekind/shortener/.github%2Fworkflows%2Ftesting.yaml?label=tests&color=green" hspace="5"></a>
-<a href="https://codecov.io/gh/maekind/shortener"><img src="https://codecov.io/gh/maekind/shortener/graph/badge.svg?token=JcGna50uJL" hspace="5"/>
- </a>
-<a href="https://github.com/maekind/shortener/releases"><img src="https://img.shields.io/github/actions/workflow/status/maekind/shortener/.github%2Fworkflows%2Frelease.yaml?label=package&color=green" hspace="5"></a>
-<a href="https://pypi.org/project/shortener"><img src="https://img.shields.io/github/v/release/maekind/shortener?color=blue&label=pypi latest" hspace="5"></a>
-<br>
 <a href="https://github.com/maekind/shortener/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-orange.svg" hspace="5"></a>
 <a href="https://github.com/maekind/shortener"><img src="https://img.shields.io/github/repo-size/maekind/shortener?color=red" hspace="5"></a>
 <a href="https://github.com/maekind/shortener"><img src="https://img.shields.io/github/last-commit/maekind/shortener?color=black" hspace="5"></a>
@@ -17,7 +11,7 @@
 <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python%20version-%3E3.12-lightblue" hspace="5"></a>
 </p>
 
-<h1 align="center">Shortener</h1>
+<h1 align="center">Shortener backend</h1>
 
 ## Development
 
@@ -80,12 +74,3 @@ Then, apply the migration:
 ```bash
 alembic upgrade head
 ```
-
-## Contributors
-
-<a href="https://github.com/maekind/shortener/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=maekind/shortener" />
-</a>
-<br/>
-<br/>
-<a href="mailto:marco@marcoespinosa.com"> Say hello!</a>
