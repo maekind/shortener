@@ -1,4 +1,4 @@
-# app
+# shortener-frontend
 
 ## Project setup
 ```

@@ -37,13 +37,14 @@ export default {
       shortUrl: "",
       copied: false,
       sent: false,
-      api_url: "http://localhost:8000/api/v1",
+      backend_host: "http://localhost:8000",
+      api_url: "/api/v1",
     };
   },
   methods: {
     async shortenUrl() {
       try {
-        const endpoint = `${this.api_url}/shorten?url=${encodeURIComponent(this.url)}`;
+        const endpoint = `${this.backend_host}${this.api_url}/shorten?url=${encodeURIComponent(this.url)}`;
         const response = await fetch(endpoint, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -78,21 +79,7 @@ export default {
       // Extract the short_id from the URL path
       const shortId = window.location.pathname.substring(1);
       if (shortId) {
-        window.location.href = `${this.api_url}/redirect?short_id=${shortId}`;
-
-        // try {
-        //   const response = await fetch(`${this.api_url}/redirect?short_id=${shortId}`);
-        //   const data = await response.json();
-        //   if (data.original_url) {
-        //     alert("Redirecting to the original URL: " + data.original_url);
-        //     // Redirect to the original URL
-        //     window.location.href = data.original_url;
-        //   } else {
-        //     alert("The shortened URL is invalid or expired");
-        //   }
-        // } catch (error) {
-        //   alert("Failed to retrieve the original URL");
-        // }
+        window.location.href = `${this.backend_host}${this.api_url}/redirect?short_id=${shortId}`;
       }
     },
   },
