@@ -1,20 +1,43 @@
-version: '3.9'
-
 services:
-  dev:
+  shortener-backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile.dev
-    profiles:
-      - dev
+    container_name: shortener-backend
     ports:
       - "8000:8000"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_SERVER: shortener-db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: shortener
+      FRONTEND_HOST: http://localhost:8080
+      PROJECT_NAME: "shortener url"
+      BACKEND_CORS_ORIGINS: "http://localhost,https://localhost, http://localhost:8000, https://localhost:8000"
+    depends_on:
+      - shortener-db
+    restart: always
 
-  prod:
-    build:
-      context: .
-      dockerfile: Dockerfile.prod
-    profiles:
-      - prod
+  shortener-db:
+    image: postgres:latest
+    container_name: shortener-local-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
     ports:
-      - "8000:8000"
+      - "5432:5432"
+    restart: always
+
+  shortener-frontend:
+    build:
+      context: ./frontend/app
+      dockerfile: Dockerfile
+    container_name: shortener-frontend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend/app/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - shortener-backend
+    restart: always

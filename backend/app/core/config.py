@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
     HOST_NAME: str = "http://localhost:8000"
-    FRONTEND_HOST: str
+    FRONTEND_HOST: str = "http://localhost:8080"
 
     DEFAULT_URL_SCHEMA: str = "http"
 
@@ -65,11 +65,12 @@ class Settings(BaseSettings):
     @property
     def SQLALCHEMY_URI(self) -> PostgresDsn:
         return MultiHostUrl.build(
-            scheme="postgresql+psycopg",
+            scheme="postgresql",
             username=self.POSTGRES_USER,
             password=self.POSTGRES_PASSWORD,
             host=self.POSTGRES_SERVER,
             port=self.POSTGRES_PORT,
+            path="postgres",
         )
 
 

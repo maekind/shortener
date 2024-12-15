@@ -1,0 +1,20 @@
+# Use the official Python image
+FROM python:3.12-slim
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the application code
+COPY . .
+
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    netcat-openbsd && \
+    pip install uv && \
+    uv sync
+
+# Clean up to reduce image size
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Default command for development
+CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
