@@ -729,7 +729,7 @@ wheels = [
 
 [[package]]
 name = "shortener"
-version = "0.0.0"
+version = "1.0.0"
 source = { editable = "." }
 dependencies = [
     { name = "alembic" },
@@ -738,7 +738,6 @@ dependencies = [
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "sqlmodel" },
-    { name = "typer" },
     { name = "uvicorn" },
 ]
 
@@ -759,7 +758,6 @@ requires-dist = [
     { name = "pydantic", specifier = ">=2.10.1" },
     { name = "pydantic-settings", specifier = ">=2.6.1" },
     { name = "sqlmodel" },
-    { name = "typer", specifier = ">=0.14.0" },
     { name = "uvicorn" },
 ]
 
