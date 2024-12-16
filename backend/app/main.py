@@ -11,10 +11,8 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     return f"{route.tags[0]}-{route.name}"
 
 
-# Lifespan function for FastAPI lifecycle events
 async def lifespan(app: FastAPI):
     """Application lifecycle events"""
-    # Database creation logic
     dsn = str(settings.SQLALCHEMY_URI)
     db_name = settings.POSTGRES_DB
 
@@ -29,7 +27,7 @@ async def lifespan(app: FastAPI):
                 # Database already exists
                 print(f"Database {db_name} already exists.")
 
-    # Run migrations (e.g., Alembic)
+    # Run migrations
     from alembic import command
     from alembic.config import Config
 

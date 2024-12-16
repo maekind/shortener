@@ -15,18 +15,26 @@ services:
       FRONTEND_HOST: http://localhost:8080
       PROJECT_NAME: "shortener url"
       BACKEND_CORS_ORIGINS: "http://localhost,https://localhost, http://localhost:8000, https://localhost:8000"
+      REDIS_HOST: redis
     depends_on:
       - shortener-db
     restart: always
 
   shortener-db:
     image: postgres:latest
-    container_name: shortener-local-db
+    container_name: shortener-database
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
       - "5432:5432"
+    restart: always
+
+  redis:
+    image: redis:latest
+    container_name: shortener-redis
+    ports:
+      - "6379:6379"
     restart: always
 
   shortener-frontend:

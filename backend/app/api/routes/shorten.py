@@ -8,7 +8,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import RedirectResponse
 from sqlmodel import select
 
-from app.api.deps import SessionDep
+from app.api.deps import DBSessionDep, RedisSessionDep
 from app.core.config import settings
 from app.models import URL, HitStats, ShortURL, URLResponse
 
@@ -21,7 +21,7 @@ def generate_short_id(length: int = 6) -> str:
 
 
 @router.get("/shorten", response_model=ShortURL)
-def shorten_url(url: str, session: SessionDep) -> Any:
+def shorten_url(url: str, session: DBSessionDep, redis_client: RedisSessionDep) -> Any:
     """Shorten a URL"""
     short_id = generate_short_id()
 
@@ -33,6 +33,9 @@ def shorten_url(url: str, session: SessionDep) -> Any:
     session.commit()
     session.refresh(url)
 
+    # Store the result in Redis
+    redis_client.set(short_id, url.original_url, ex=2592000)  # Set expiration to 1 month (30 days)
+
     return ShortURL(
         original_url=url.original_url,
         expires_at=url.expires_at,
@@ -41,8 +44,12 @@ def shorten_url(url: str, session: SessionDep) -> Any:
 
 
 @router.get("/redirect", response_model=URLResponse)
-def redirect_to_url(short_id: str, session: SessionDep):
+def redirect_to_url(short_id: str, session: DBSessionDep, redis_client: RedisSessionDep):
     """Redirect to the original URL"""
+    # First, check Redis cache
+    if original_url := redis_client.get(short_id):
+        return RedirectResponse(original_url)
+
     statement = select(URL).where(URL.short_id == short_id)
     result = session.exec(statement).first()
     if not result:

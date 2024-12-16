@@ -17,6 +17,7 @@ dependencies = [
     "pydantic-settings>=2.6.1",
     "alembic>=1.14.0",
     "psycopg[binary]>=3.2.3",
+    "redis>=5.2.1",
 ]
 
 [tool.uv]

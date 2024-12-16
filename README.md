@@ -13,7 +13,13 @@ The data is stored in a PostgreSQL database and there is a Redis cache to store 
 From the root directory, run the following commands:
 
 ```bash
-docker-compose up -d --build
+docker compose up -d --build
+```
+
+If you want to reload the application, you can run:
+
+```bash
+docker compose down --remove-orphans && docker compose up -d --build
 ```
 
 This will start the FastAPI server and the Vue.js frontend. The frontend will be available at `http://localhost:8080`.
